@@ -4,10 +4,9 @@ import emailjs from "emailjs-com";
 /**Testing some comment*/
 
 emailjs.init('w4atMqhypPAGA2UZ_');
-const questions = [
+const bakerQuestions = [
   "Efficiency & Productivity",
   "Quality of Work",
-  "Customer Service (FOH only)",
   "Attention to Detail",
   "Collaboration",
   "Communication",
@@ -15,12 +14,28 @@ const questions = [
   "Work Ethic",
   "Adaptability",
   "Professionalism",
-  "Cleanliness (Bakers)",
-  "Store Presentation (FOH)",
+  "Cleanliness",
+  "Compliance with Health & Safety",
+];
+
+const fohQuestions = [
+  "Efficiency & Productivity",
+  "Quality of Work",
+  "Customer Service",
+  "Attention to Detail",
+  "Collaboration",
+  "Communication",
+  "Reliability",
+  "Work Ethic",
+  "Adaptability",
+  "Professionalism",
+  "Store Presentation",
   "Compliance with Health & Safety",
 ];
 
 const PerformanceReview = ({ formAnswers }: { formAnswers: number[] }) => {
+  const [role, setRole] = useState("FOH");
+  const questions = role === "FOH" ? fohQuestions : bakerQuestions;
   const [scores, setScores] = useState<number[]>(
     formAnswers.length ? formAnswers : Array(questions.length).fill(3)
   );
@@ -35,6 +50,11 @@ const PerformanceReview = ({ formAnswers }: { formAnswers: number[] }) => {
       setScores(formAnswers);
     }
   }, [formAnswers]);
+
+  useEffect(() => {
+    setScores(Array(questions.length).fill(3));
+    setComments(Array(questions.length).fill(""));
+  }, [role]);
 
   const handleScoreChange = (index: number, value: number) => {
     const newScores = [...scores];
@@ -109,6 +129,15 @@ const PerformanceReview = ({ formAnswers }: { formAnswers: number[] }) => {
           placeholder="Enter employee's name"
         />
       </div>
+      <label className="block text-sm font-medium">Select Role</label>
+      <select
+        className="border p-2 w-full mb-4"
+        value={role}
+        onChange={(e) => setRole(e.target.value)}
+      >
+        <option value="FOH">FOH</option>
+        <option value="Baker">Baker</option>
+      </select>
       {questions.map((q, index) => (
         <div key={index} className="mb-3">
           <label className="block text-sm font-medium">{q}</label>
