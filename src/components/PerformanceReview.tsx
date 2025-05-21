@@ -60,8 +60,8 @@ const PerformanceReview = ({ formAnswers }: { formAnswers: number[] }) => {
     let y = 60;
     questions.forEach((q, index) => {
       const score = scores[index];
-      const comment = comments[index] || "No comment";
-      doc.text(`${q}: ${score} - ${comment}`, 20, y);
+      const comment = comments[index] || "";
+      doc.text(`${q}: ${score}\r\n - ${comment}`, 20, y);
       y += 10;
       if (y > 270) {
         doc.addPage();
